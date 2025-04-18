@@ -56,8 +56,8 @@ public class CommonController{
     private ConfigService configService;    
 	/**
 	 * 获取table表中的column列表(联动接口)
-	 * @param table
-	 * @param column
+	 * @param tableName
+	 * @param columnName
 	 * @return
 	 */
 	@IgnoreAuth
@@ -84,8 +84,8 @@ public class CommonController{
 	
 	/**
 	 * 根据table中的column获取单条记录
-	 * @param table
-	 * @param column
+	 * @param tableName
+	 * @param columnName
 	 * @return
 	 */
 	@IgnoreAuth
@@ -112,7 +112,7 @@ public class CommonController{
 	
 	/**
 	 * 修改table表的sfsh状态
-	 * @param table
+	 * @param tableName
 	 * @param map
 	 * @return
 	 */

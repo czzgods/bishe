@@ -4,7 +4,7 @@
 			<div class="top-container">
 				<!-- info -->
 				<div class="top_title">
-					<span @click="goMenu('/index/home')">基于springboot的少儿编程教育机构管理系统</span>
+					<span @click="goMenu('/index/home')">少儿编程教育机构管理系统</span>
 				</div>
 				<div class="top_tel"></div>
 			

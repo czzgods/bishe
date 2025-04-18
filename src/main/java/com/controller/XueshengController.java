@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.entity.TokenEntity;
 import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class XueshengController {
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		XueshengEntity u = xueshengService.selectOne(new EntityWrapper<XueshengEntity>().eq("xueshengzhanghao", username));
-		if(u==null || !u.getMima().equals(password)) {
+		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
 			return R.error("账号或密码不正确");
 		}
 		
@@ -94,6 +95,7 @@ public class XueshengController {
 		}
 		Long uId = new Date().getTime();
 		xuesheng.setId(uId);
+        xuesheng.setMima(DigestUtils.md5Hex(xuesheng.getMima()));
         xueshengService.insert(xuesheng);
         return R.ok();
     }
@@ -128,7 +130,7 @@ public class XueshengController {
     	if(u==null) {
     		return R.error("账号不存在");
     	}
-        u.setMima("123456");
+        u.setMima(DigestUtils.md5Hex("123456"));
         xueshengService.updateById(u);
         return R.ok("密码已重置为：123456");
     }
@@ -275,6 +277,7 @@ public class XueshengController {
         if(xueshengService.selectCount(new EntityWrapper<XueshengEntity>().ne("id", xuesheng.getId()).eq("xueshengzhanghao", xuesheng.getXueshengzhanghao()))>0) {
             return R.error("学生账号已存在");
         }
+        xuesheng.setMima(DigestUtils.md5Hex(xuesheng.getMima()));
         //全部更新
         xueshengService.updateById(xuesheng);
     if(null!=xuesheng.getXueshengzhanghao())

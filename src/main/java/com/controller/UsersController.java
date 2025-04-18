@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,7 @@ public class UsersController{
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		UsersEntity user = userService.selectOne(new EntityWrapper<UsersEntity>().eq("username", username));
-		if(user==null || !user.getPassword().equals(password)) {
+		if(user==null || !user.getPassword().equals(DigestUtils.md5Hex(password))) {
 			return R.error("账号或密码不正确");
 		}
 		String token = tokenService.generateToken(user.getId(),username, "users", user.getRole());
@@ -69,6 +70,7 @@ public class UsersController{
     	if(userService.selectOne(new EntityWrapper<UsersEntity>().eq("username", user.getUsername())) !=null) {
     		return R.error("用户已存在");
     	}
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         userService.insert(user);
         return R.ok();
     }
@@ -92,7 +94,7 @@ public class UsersController{
     	if(user==null) {
     		return R.error("账号不存在");
     	}
-    	user.setPassword("123456");
+    	user.setPassword(DigestUtils.md5Hex("123456"));
         userService.update(user,null);
         return R.ok("密码已重置为：123456");
     }
@@ -145,6 +147,7 @@ public class UsersController{
     	if(userService.selectOne(new EntityWrapper<UsersEntity>().eq("username", user.getUsername())) !=null) {
     		return R.error("用户已存在");
     	}
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         userService.insert(user);
         return R.ok();
     }
@@ -159,6 +162,7 @@ public class UsersController{
     	if(u!=null && u.getId()!=user.getId() && u.getUsername().equals(user.getUsername())) {
     		return R.error("用户名已存在。");
     	}
+		user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         userService.updateById(user);//全部更新
         return R.ok();
     }

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.entity.TokenEntity;
 import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +77,7 @@ public class BianchengjiaoshiController {
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		BianchengjiaoshiEntity u = bianchengjiaoshiService.selectOne(new EntityWrapper<BianchengjiaoshiEntity>().eq("jiaoshigonghao", username));
-		if(u==null || !u.getMima().equals(password)) {
+		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
 			return R.error("账号或密码不正确");
 		}
 		
@@ -99,6 +100,11 @@ public class BianchengjiaoshiController {
 		}
 		Long uId = new Date().getTime();
 		bianchengjiaoshi.setId(uId);
+        // 密码加密
+        String md5Password = DigestUtils.md5Hex(bianchengjiaoshi.getMima());
+
+        bianchengjiaoshi.setMima(md5Password);
+
         bianchengjiaoshiService.insert(bianchengjiaoshi);
         return R.ok();
     }
@@ -133,7 +139,7 @@ public class BianchengjiaoshiController {
     	if(u==null) {
     		return R.error("账号不存在");
     	}
-        u.setMima("123456");
+        u.setMima(DigestUtils.md5Hex("123456"));
         bianchengjiaoshiService.updateById(u);
         return R.ok("密码已重置为：123456");
     }
@@ -290,7 +296,10 @@ public class BianchengjiaoshiController {
         if(bianchengjiaoshiService.selectCount(new EntityWrapper<BianchengjiaoshiEntity>().ne("id", bianchengjiaoshi.getId()).eq("jiaoshigonghao", bianchengjiaoshi.getJiaoshigonghao()))>0) {
             return R.error("教师工号已存在");
         }
+        // 密码加密
+        String md5Password = DigestUtils.md5Hex(bianchengjiaoshi.getMima());
         //全部更新
+        bianchengjiaoshi.setMima(md5Password);
         bianchengjiaoshiService.updateById(bianchengjiaoshi);
     if(null!=bianchengjiaoshi.getJiaoshigonghao())
     {

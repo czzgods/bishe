@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.entity.TokenEntity;
 import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class JiazhangController {
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		JiazhangEntity u = jiazhangService.selectOne(new EntityWrapper<JiazhangEntity>().eq("jiazhangzhanghao", username));
-		if(u==null || !u.getMima().equals(password)) {
+		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
 			return R.error("账号或密码不正确");
 		}
 		
@@ -93,7 +94,10 @@ public class JiazhangController {
 			return R.error("注册用户已存在");
 		}
 		Long uId = new Date().getTime();
-		jiazhang.setId(uId);
+        String mima = jiazhang.getMima();
+        String password = DigestUtils.md5Hex(mima);
+        jiazhang.setId(uId);
+        jiazhang.setMima(password);
         jiazhangService.insert(jiazhang);
         return R.ok();
     }
@@ -275,6 +279,10 @@ public class JiazhangController {
         if(jiazhangService.selectCount(new EntityWrapper<JiazhangEntity>().ne("id", jiazhang.getId()).eq("jiazhangzhanghao", jiazhang.getJiazhangzhanghao()))>0) {
             return R.error("家长账号已存在");
         }
+        // 密码加密
+        String md5Password = DigestUtils.md5Hex(jiazhang.getMima());
+        //全部更新
+        jiazhang.setMima(md5Password);
         //全部更新
         jiazhangService.updateById(jiazhang);
     if(null!=jiazhang.getJiazhangzhanghao())

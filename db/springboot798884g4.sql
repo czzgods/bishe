@@ -65,7 +65,7 @@ DROP TABLE IF EXISTS `bianchengjiaoshi`;
 CREATE TABLE `bianchengjiaoshi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `jiaoshigonghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
+  `jiaoshigonghao` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
   `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
   `mima` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
   `touxiang` longtext COLLATE utf8mb4_unicode_ci COMMENT '头像',
@@ -520,10 +520,10 @@ CREATE TABLE `kechengxinxi` (
   `kechengfenlei` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程分类',
   `tupian` longtext COLLATE utf8mb4_unicode_ci COMMENT '图片',
   `suoxujichu` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '所需基础',
-  `jiaoshigonghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
+  `jiaoshigonghao` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
   `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
-  `kechengfeiyong` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程费用',
-  `keshi` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课时',
+  `kechengfeiyong` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程费用',
+  `keshi` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课时',
   `kechengjianjie` longtext COLLATE utf8mb4_unicode_ci COMMENT '课程简介',
   `xiangqing` longtext COLLATE utf8mb4_unicode_ci COMMENT '详情',
   `clicktime` datetime DEFAULT NULL COMMENT '最近点击时间',
@@ -764,7 +764,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `username` varchar(100) NOT NULL COMMENT '用户名',
+  `username` varchar(100) NOT NULL COMMENT '账号',
   `password` varchar(100) NOT NULL COMMENT '密码',
   `image` varchar(200) DEFAULT NULL COMMENT '头像',
   `role` varchar(100) DEFAULT '管理员' COMMENT '角色',
@@ -791,17 +791,17 @@ DROP TABLE IF EXISTS `xuesheng`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `xuesheng` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `xueshengzhanghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '学生账号',
   `xueshengxingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '学生姓名',
   `mima` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
   `touxiang` longtext COLLATE utf8mb4_unicode_ci COMMENT '头像',
-  `xingbie` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '性别',
-  `nianling` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '年龄',
+  `xingbie` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '性别',
+  `nianling` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '年龄',
   `jiazhangzhanghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长账号',
   `jiazhangxingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长姓名',
-  `jiazhangdianhua` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长电话',
+  `jiazhangdianhua` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长电话',
   `jiatingzhuzhi` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家庭住址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `xueshengzhanghao` (`xueshengzhanghao`)
