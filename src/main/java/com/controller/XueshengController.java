@@ -72,7 +72,8 @@ public class XueshengController {
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		XueshengEntity u = xueshengService.selectOne(new EntityWrapper<XueshengEntity>().eq("xueshengzhanghao", username));
-		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
+        String md5Hex = DigestUtils.md5Hex(password);
+        if(u==null || !u.getMima().equals(md5Hex)) {
 			return R.error("账号或密码不正确");
 		}
 		

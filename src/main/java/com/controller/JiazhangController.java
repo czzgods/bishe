@@ -132,7 +132,7 @@ public class JiazhangController {
     	if(u==null) {
     		return R.error("账号不存在");
     	}
-        u.setMima("123456");
+        u.setMima(DigestUtils.md5Hex("123456"));
         jiazhangService.updateById(u);
         return R.ok("密码已重置为：123456");
     }
@@ -310,17 +310,4 @@ public class JiazhangController {
         jiazhangService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
-    
-	
-
-
-
-
-
-
-
-
-
-
-
 }

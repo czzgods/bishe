@@ -15,6 +15,11 @@ import java.util.Collections;
 
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.entity.BianchengjiaoshiEntity;
+import com.entity.KechengxinxiEntity;
+import com.service.BianchengjiaoshiService;
+import com.service.KechengxinxiService;
 import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -57,11 +62,11 @@ public class KechengbaomingController {
     private KechengbaomingService kechengbaomingService;
 
 
-
-
+    @Autowired
+    private BianchengjiaoshiService bianchengjiaoshiService;
     
-
-
+    @Autowired
+    private KechengxinxiService kechengxinxiService;
 
     /**
      * 后台列表
@@ -158,11 +163,55 @@ public class KechengbaomingController {
      * 后台保存
      */
     @RequestMapping("/save")
-    @SysLog("新增课程报名") 
+    @SysLog("新增课程报名")
+    @Transactional
     public R save(@RequestBody KechengbaomingEntity kechengbaoming, HttpServletRequest request){
-    	//ValidatorUtils.validateEntity(kechengbaoming);
-        kechengbaomingService.insert(kechengbaoming);
-        return R.ok();
+        // 1.基础字段校验
+        if(StringUtils.isBlank(kechengbaoming.getXueshengzhanghao())) {
+            return R.error("学生账号不能为空");
+        }
+        if(StringUtils.isBlank(kechengbaoming.getKechengmingcheng())) {
+            return R.error("课程名称不能为空");
+        }
+        if(StringUtils.isBlank(kechengbaoming.getJiaoshigonghao())) {
+            return R.error("教师工号不能为空");
+        }
+        // 2.数值类型校验
+        if(kechengbaoming.getKechengfeiyong() == null || kechengbaoming.getKechengfeiyong() < 0) {
+            return R.error("课程费用不能为负数");
+        }
+        // 3.业务规则校验
+        // 3.1 防止重复报名（根据学生+课程名称+教师工号）
+        EntityWrapper<KechengbaomingEntity> queryWrapper = new EntityWrapper<>();
+        queryWrapper.eq("xueshengzhanghao", kechengbaoming.getXueshengzhanghao())
+                .eq("kechengmingcheng", kechengbaoming.getKechengmingcheng())
+                .eq("jiaoshigonghao", kechengbaoming.getJiaoshigonghao());
+        if(kechengbaomingService.selectCount(queryWrapper) > 0) {
+            return R.error("该学生已报名此教师的同名课程");
+        }
+        // 4.设置系统字段
+        kechengbaoming.setBaomingshijian(new Date()); // 自动设置报名时间
+        kechengbaoming.setIspay("未支付");           // 默认支付状态
+        // 5.关联数据校验（需要注入对应Service）
+        // 验证教师有效性
+        Wrapper<BianchengjiaoshiEntity> jiaoshigonghao = new EntityWrapper<BianchengjiaoshiEntity>()
+                .eq("jiaoshigonghao", kechengbaoming.getJiaoshigonghao());
+        if(bianchengjiaoshiService.selectOne(jiaoshigonghao) == null) {
+         return R.error("教师信息不存在");
+        }
+        // 验证课程有效性
+        EntityWrapper<KechengxinxiEntity> courseQuery = new EntityWrapper<>();
+        courseQuery.eq("kechengmingcheng", kechengbaoming.getKechengmingcheng())
+             .eq("jiaoshigonghao", kechengbaoming.getJiaoshigonghao());
+        KechengxinxiEntity course = kechengxinxiService.selectOne(courseQuery);
+        if(course == null) {
+           return R.error("对应课程不存在");
+        }
+        // 6.保存数据
+        if(!kechengbaomingService.insert(kechengbaoming)) {
+            return R.error("报名信息保存失败");
+        }
+        return R.ok().put("data", kechengbaoming.getId());
     }
     
     /**

@@ -1,35 +1,27 @@
 package com.controller;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Date;
 import java.util.List;
-import java.util.Collections;
-
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.entity.TokenEntity;
-import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.annotation.IgnoreAuth;
 import com.annotation.SysLog;
 import com.utils.UserBasedCollaborativeFiltering;
@@ -42,9 +34,6 @@ import com.service.TokenService;
 import com.utils.PageUtils;
 import com.utils.R;
 import com.utils.MPUtil;
-import com.utils.MapUtils;
-import com.utils.CommonUtil;
-import java.io.IOException;
 import com.service.StoreupService;
 import com.entity.StoreupEntity;
 
@@ -76,11 +65,11 @@ public class BianchengjiaoshiController {
 	@IgnoreAuth
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
-		BianchengjiaoshiEntity u = bianchengjiaoshiService.selectOne(new EntityWrapper<BianchengjiaoshiEntity>().eq("jiaoshigonghao", username));
+        Wrapper<BianchengjiaoshiEntity> jiaoshigonghao = new EntityWrapper<BianchengjiaoshiEntity>().eq("jiaoshigonghao", username);
+        BianchengjiaoshiEntity u = bianchengjiaoshiService.selectOne(jiaoshigonghao );
 		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
 			return R.error("账号或密码不正确");
 		}
-		
 		String token = tokenService.generateToken(u.getId(), username,"bianchengjiaoshi",  "编程教师" );
 		return R.ok().put("token", token);
 	}

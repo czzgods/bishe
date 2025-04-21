@@ -70,7 +70,7 @@ public class NewsEntity<T> implements Serializable {
 	private String typename;
 	
 	/**
-	 * 发布人
+	 * 发布管理员
 	 */
 					
 	private String name;

@@ -62,7 +62,11 @@ public class PaikexinxiEntity<T> implements Serializable {
 	 */
 					
 	private String kechengfenlei;
-	
+
+	/**
+	 * 排课管理员
+	 */
+	private String admin;
 	/**
 	 * 教师工号
 	 */
@@ -120,6 +124,18 @@ public class PaikexinxiEntity<T> implements Serializable {
 	}
 	/**
 	 * 获取：课程名称
+	 */
+	public String getAdmin() {
+		return admin;
+	}
+	/**
+	 * 设置：排课管理员
+	 */
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+	/**
+	 * 获取：排课管理员
 	 */
 	public String getKechengmingcheng() {
 		return kechengmingcheng;

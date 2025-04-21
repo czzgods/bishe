@@ -1,5 +1,6 @@
 package com.utils;
 
+import com.entity.UsersEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,6 +35,15 @@ public class JwtUtils {
                 .compact();
     }
 
+    // JWT Token
+    public String generateToken(UsersEntity user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole())  // 注入角色信息
+                .setExpiration(new Date(System.currentTimeMillis() + 3600 * 1000))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
+    }
     /**
      * 解析JWT令牌
      *

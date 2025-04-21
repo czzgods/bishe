@@ -15,6 +15,9 @@ import java.util.Collections;
 
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.entity.ExamquestionEntity;
+import com.service.ExamquestionService;
 import com.utils.ValidatorUtils;
 import com.utils.DeSensUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -57,11 +60,12 @@ public class ExamrecordController {
     private ExamrecordService examrecordService;
 
 
+    @Autowired
+    private ExamquestionService questionService;
 
 
-    
 
-   	    /**
+    /**
      * 考试记录接口
      */
     @RequestMapping("/groupby")
@@ -103,12 +107,12 @@ public class ExamrecordController {
 				DeSensUtil.desensitize(page,deSens);
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前台列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,ExamrecordEntity examrecord, 
+    public R list(@RequestParam Map<String, Object> params,ExamrecordEntity examrecord,
 		HttpServletRequest request){
     	if(!request.getSession().getAttribute("role").toString().equals("管理员")) {
     		examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
@@ -116,7 +120,7 @@ public class ExamrecordController {
         EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
 
 		PageUtils page = examrecordService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, examrecord), params), params));
-		
+
 				Map<String, String> deSens = new HashMap<>();
 				DeSensUtil.desensitize(page,deSens);
         return R.ok().put("data", page);
@@ -130,7 +134,7 @@ public class ExamrecordController {
     @RequestMapping("/lists")
     public R list( ExamrecordEntity examrecord){
        	EntityWrapper<ExamrecordEntity> ew = new EntityWrapper<ExamrecordEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord")); 
+      	ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord"));
         return R.ok().put("data", examrecordService.selectListView(ew));
     }
 
@@ -140,11 +144,11 @@ public class ExamrecordController {
     @RequestMapping("/query")
     public R query(ExamrecordEntity examrecord){
         EntityWrapper< ExamrecordEntity> ew = new EntityWrapper< ExamrecordEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord")); 
+ 		ew.allEq(MPUtil.allEQMapPre( examrecord, "examrecord"));
 		ExamrecordView examrecordView =  examrecordService.selectView(ew);
 		return R.ok("查询测试记录表成功").put("data", examrecordView);
     }
-	
+
     /**
      * 后台详情
      */
@@ -167,7 +171,7 @@ public class ExamrecordController {
 				DeSensUtil.desensitize(examrecord,deSens);
         return R.ok().put("data", examrecord);
     }
-    
+
 
 
 
@@ -175,24 +179,82 @@ public class ExamrecordController {
      * 后台保存
      */
     @RequestMapping("/save")
-    @SysLog("新增测试记录表") 
+    @SysLog("新增测试记录表")
     public R save(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(examrecord);
     	examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
         examrecordService.insert(examrecord);
         return R.ok();
     }
-    
+
     /**
      * 前台保存
+     * 做题后提交（支持单题/整卷提交）
      */
     @SysLog("新增测试记录表")
+    @Transactional
     @RequestMapping("/add")
-    public R add(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request){
-    	//ValidatorUtils.validateEntity(examrecord);
-    	examrecord.setUserid((Long)request.getSession().getAttribute("userId"));
-        examrecordService.insert(examrecord);
-        return R.ok().put("data",examrecord.getId());
+    public R add(@RequestBody ExamrecordEntity examrecord, HttpServletRequest request) {
+        // 1.基础校验
+        Long userId = (Long) request.getSession().getAttribute("userId");
+        if (userId == null) {
+            return R.error(401, "用户未登录");
+        }
+        if (examrecord.getPaperid() == null) {
+            return R.error("试卷ID不能为空");
+        }
+        if (examrecord.getQuestionid() == null) {
+            return R.error("试题ID不能为空");
+        }
+        if (StringUtils.isBlank(examrecord.getMyanswer())) {
+            return R.error("考生答案不能为空");
+        }
+        // 2.设置系统字段
+        examrecord.setUserid(userId);
+        examrecord.setAddtime(new Date());
+        // 3.关联数据校验（需注入对应Service）
+        Wrapper<ExamquestionEntity> entityWrapper = new EntityWrapper<>();;
+        entityWrapper.eq("id", examrecord.getQuestionid());
+        if(questionService.selectOne(entityWrapper) == null) {
+            return R.error("试题不存在或已下架");
+        }
+        try {
+            if (!examrecordService.insert(examrecord)) {
+                return R.error("提交失败，请稍后重试");
+            }
+        } catch (Exception e) {
+            return R.error("系统处理异常：" + e.getMessage());
+        }
+        // 4.自动批改逻辑（根据试题类型）
+        if(examrecord.getType() != null) {
+            switch(examrecord.getType().intValue()) {
+                case 0: // 单选题
+                case 1: // 多选题
+                case 2: // 判断题
+                case 3: // 填空题
+                    autoCheckObjective(examrecord);
+                    break;
+                case 4: // 主观题
+                    examrecord.setIsmark(0L); // 需要人工批改
+                    break;
+                default:
+                    return R.error("无效的试题类型");
+            }
+        }
+        return R.ok()
+                .put("data", examrecord.getId())
+                .put("myscore", examrecord.getMyscore())
+                .put("ismark", examrecord.getIsmark());
+    }
+    /**
+     * 自动批改客观题
+     */
+    private void autoCheckObjective(ExamrecordEntity record) {
+        // 对比正确答案（需根据实际业务完善）
+        boolean isCorrect = record.getAnswer() != null &&
+                record.getAnswer().equalsIgnoreCase(record.getMyanswer());
+        record.setMyscore(isCorrect ? record.getScore() : 0L);
+        record.setIsmark(1L); // 标记已批改
     }
 
 

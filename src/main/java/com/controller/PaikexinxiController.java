@@ -59,7 +59,7 @@ public class PaikexinxiController {
 
 
 
-    
+
 
 
 
@@ -82,18 +82,18 @@ public class PaikexinxiController {
 				DeSensUtil.desensitize(page,deSens);
         return R.ok().put("data", page);
     }
-    
+
     /**
      * 前台列表
      */
 	@IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params,PaikexinxiEntity paikexinxi, 
+    public R list(@RequestParam Map<String, Object> params,PaikexinxiEntity paikexinxi,
 		HttpServletRequest request){
         EntityWrapper<PaikexinxiEntity> ew = new EntityWrapper<PaikexinxiEntity>();
 
 		PageUtils page = paikexinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, paikexinxi), params), params));
-		
+
 				Map<String, String> deSens = new HashMap<>();
 				DeSensUtil.desensitize(page,deSens);
         return R.ok().put("data", page);
@@ -107,7 +107,7 @@ public class PaikexinxiController {
     @RequestMapping("/lists")
     public R list( PaikexinxiEntity paikexinxi){
        	EntityWrapper<PaikexinxiEntity> ew = new EntityWrapper<PaikexinxiEntity>();
-      	ew.allEq(MPUtil.allEQMapPre( paikexinxi, "paikexinxi")); 
+      	ew.allEq(MPUtil.allEQMapPre( paikexinxi, "paikexinxi"));
         return R.ok().put("data", paikexinxiService.selectListView(ew));
     }
 
@@ -117,11 +117,11 @@ public class PaikexinxiController {
     @RequestMapping("/query")
     public R query(PaikexinxiEntity paikexinxi){
         EntityWrapper< PaikexinxiEntity> ew = new EntityWrapper< PaikexinxiEntity>();
- 		ew.allEq(MPUtil.allEQMapPre( paikexinxi, "paikexinxi")); 
+ 		ew.allEq(MPUtil.allEQMapPre( paikexinxi, "paikexinxi"));
 		PaikexinxiView paikexinxiView =  paikexinxiService.selectView(ew);
 		return R.ok("查询排课信息成功").put("data", paikexinxiView);
     }
-	
+
     /**
      * 后台详情
      */
@@ -144,7 +144,7 @@ public class PaikexinxiController {
 				DeSensUtil.desensitize(paikexinxi,deSens);
         return R.ok().put("data", paikexinxi);
     }
-    
+
 
 
 
@@ -152,11 +152,36 @@ public class PaikexinxiController {
      * 后台保存
      */
     @RequestMapping("/save")
-    @SysLog("新增排课信息") 
-    public R save(@RequestBody PaikexinxiEntity paikexinxi, HttpServletRequest request){
-    	//ValidatorUtils.validateEntity(paikexinxi);
-        paikexinxiService.insert(paikexinxi);
-        return R.ok();
+    @SysLog("新增排课信息")
+    @Transactional(rollbackFor = Exception.class)
+    public R save(@RequestBody PaikexinxiEntity paikexinxi, HttpServletRequest request) {
+        try {
+            if (StringUtils.isBlank(paikexinxi.getJiaoshigonghao())) {
+                return R.error("教师工号不能为空");
+            }
+            // 2.获取当前用户
+            String username = (String) request.getSession().getAttribute("username");
+            if (StringUtils.isBlank(username)) {
+                return R.error(401, "未授权操作");
+            }
+            // 3.数据库核对（示例：教师排课冲突检查）
+            boolean exists = paikexinxiService.selectCount(new EntityWrapper<PaikexinxiEntity>()
+                    .eq("jiaoshigonghao", paikexinxi.getJiaoshigonghao())
+                    .eq("paikeshijian", paikexinxi.getPaikeshijian())) > 0;
+            if (exists) {
+                return R.error("该教师在此时间段已有排课");
+            }
+            // 4.设置系统字段
+            paikexinxi.setAdmin(username);
+            paikexinxi.setAddtime(new Date());
+            // 5.保存数据
+            paikexinxiService.insert(paikexinxi);
+            return R.ok("排课成功").put("data", paikexinxi.getId());
+        } catch (IllegalArgumentException e) { // 参数校验异常
+            return R.error(400, e.getMessage());
+        } catch (Exception e) {
+            return R.error(500, "系统繁忙，请稍后再试");
+        }
     }
     
     /**

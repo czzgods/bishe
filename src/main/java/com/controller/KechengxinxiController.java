@@ -160,8 +160,52 @@ public class KechengxinxiController {
     @SysLog("新增课程信息") 
     public R save(@RequestBody KechengxinxiEntity kechengxinxi, HttpServletRequest request){
     	//ValidatorUtils.validateEntity(kechengxinxi);
-        kechengxinxiService.insert(kechengxinxi);
-        return R.ok();
+        // 1.基础字段校验
+        if(StringUtils.isBlank(kechengxinxi.getKechengmingcheng())) {
+            return R.error("课程名称不能为空");
+        }
+        if(StringUtils.isBlank(kechengxinxi.getJiaoshigonghao())) {
+            return R.error("教师工号不能为空");
+        }
+        if(StringUtils.isBlank(kechengxinxi.getKechengfenlei())) {
+            return R.error("课程分类不能为空");
+        }
+        if(StringUtils.isBlank(kechengxinxi.getTupian())) {
+            return R.error("课程封面不能为空");
+        }
+        // 2.数值类型校验
+        try {
+            if(new BigDecimal(kechengxinxi.getKechengfeiyong()).compareTo(BigDecimal.ZERO) <= 0) {
+                return R.error("课程费用必须大于0");
+            }
+        } catch (NumberFormatException e) {
+            return R.error("课程费用格式不正确");
+        }
+
+        if(!StringUtils.isNumeric(kechengxinxi.getKeshi())) {
+            return R.error("课时必须为整数");
+        }
+        int keshi = Integer.parseInt(kechengxinxi.getKeshi());
+        if(keshi <= 0) {
+            return R.error("课时数必须大于0");
+        }
+        // 3.业务校验
+        // 3.1 课程重复性校验（教师+课程名称）
+        EntityWrapper<KechengxinxiEntity> queryWrapper = new EntityWrapper<>();
+        queryWrapper.eq("kechengmingcheng", kechengxinxi.getKechengmingcheng())
+                .eq("jiaoshigonghao", kechengxinxi.getJiaoshigonghao());
+        if(kechengxinxiService.selectCount(queryWrapper) > 0) {
+            return R.error("该教师已存在同名课程");
+        }
+        // 4.设置系统字段
+        kechengxinxi.setClicktime(new Date()); // 初始化点击时间
+        kechengxinxi.setDiscussnum(0);        // 初始化评论数
+        kechengxinxi.setStoreupnum(0);        // 初始化收藏数
+        // 5.保存数据
+        if(!kechengxinxiService.insert(kechengxinxi)) {
+            return R.error("保存课程信息失败");
+        }
+        return R.ok().put("data", kechengxinxi.getId());
     }
     
     /**
