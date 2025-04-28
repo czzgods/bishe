@@ -67,7 +67,8 @@ public class BianchengjiaoshiController {
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
         Wrapper<BianchengjiaoshiEntity> jiaoshigonghao = new EntityWrapper<BianchengjiaoshiEntity>().eq("jiaoshigonghao", username);
         BianchengjiaoshiEntity u = bianchengjiaoshiService.selectOne(jiaoshigonghao );
-		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
+        String md5Hex = DigestUtils.md5Hex(password);
+        if(u==null || !u.getMima().equals(md5Hex )) {
 			return R.error("账号或密码不正确");
 		}
 		String token = tokenService.generateToken(u.getId(), username,"bianchengjiaoshi",  "编程教师" );

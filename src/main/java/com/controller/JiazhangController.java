@@ -72,7 +72,8 @@ public class JiazhangController {
 	@RequestMapping(value = "/login")
 	public R login(String username, String password, String captcha, HttpServletRequest request) {
 		JiazhangEntity u = jiazhangService.selectOne(new EntityWrapper<JiazhangEntity>().eq("jiazhangzhanghao", username));
-		if(u==null || !u.getMima().equals(DigestUtils.md5Hex(password))) {
+        String s = DigestUtils.md5Hex(password);
+        if(u==null || !u.getMima().equals(s)) {
 			return R.error("账号或密码不正确");
 		}
 		

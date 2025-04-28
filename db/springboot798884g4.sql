@@ -90,7 +90,14 @@ CREATE TABLE `bianchengjiaoshi` (
 
 LOCK TABLES `bianchengjiaoshi` WRITE;
 /*!40000 ALTER TABLE `bianchengjiaoshi` DISABLE KEYS */;
-INSERT INTO `bianchengjiaoshi` VALUES (31,'2024-12-20 09:38:46','教师工号1','教师姓名1','123456','upload/bianchengjiaoshi_touxiang1.jpg','男','擅长领域1','13823888881','简介1','教学经验1',1,1,'2024-12-20 17:38:46',0,1),(32,'2024-12-20 09:38:46','教师工号2','教师姓名2','123456','upload/bianchengjiaoshi_touxiang2.jpg','男','擅长领域2','13823888882','简介2','教学经验2',2,2,'2024-12-20 17:38:46',0,2),(33,'2024-12-20 09:38:46','教师工号3','教师姓名3','123456','upload/bianchengjiaoshi_touxiang3.jpg','男','擅长领域3','13823888883','简介3','教学经验3',3,3,'2024-12-20 17:38:46',0,3),(34,'2024-12-20 09:38:46','教师工号4','教师姓名4','123456','upload/bianchengjiaoshi_touxiang4.jpg','男','擅长领域4','13823888884','简介4','教学经验4',4,4,'2024-12-20 17:38:46',0,4),(35,'2024-12-20 09:38:46','教师工号5','教师姓名5','123456','upload/bianchengjiaoshi_touxiang5.jpg','男','擅长领域5','13823888885','简介5','教学经验5',5,5,'2024-12-20 17:38:46',0,5),(36,'2024-12-20 09:38:46','教师工号6','教师姓名6','123456','upload/bianchengjiaoshi_touxiang6.jpg','男','擅长领域6','13823888886','简介6','教学经验6',6,6,'2024-12-20 17:38:46',0,6),(37,'2024-12-20 09:38:46','教师工号7','教师姓名7','123456','upload/bianchengjiaoshi_touxiang7.jpg','男','擅长领域7','13823888887','简介7','教学经验7',7,7,'2024-12-20 17:38:46',0,7),(38,'2024-12-20 09:38:46','教师工号8','教师姓名8','123456','upload/bianchengjiaoshi_touxiang8.jpg','男','擅长领域8','13823888888','简介8','教学经验8',8,8,'2024-12-20 17:38:46',0,8);
+INSERT INTO `bianchengjiaoshi` VALUES (31,'2024-12-20 09:38:46','教师工号1','教师姓名1','123456','upload/bianchengjiaoshi_touxiang1.jpg','男','擅长领域1','13823888881','简介1','教学经验1',1,1,'2024-12-20 17:38:46',0,1),
+                                      (32,'2024-12-20 09:38:46','教师工号2','教师姓名2','123456','upload/bianchengjiaoshi_touxiang2.jpg','男','擅长领域2','13823888882','简介2','教学经验2',2,2,'2024-12-20 17:38:46',0,2),
+                                      (33,'2024-12-20 09:38:46','教师工号3','教师姓名3','123456','upload/bianchengjiaoshi_touxiang3.jpg','男','擅长领域3','13823888883','简介3','教学经验3',3,3,'2024-12-20 17:38:46',0,3),
+                                      (34,'2024-12-20 09:38:46','教师工号4','教师姓名4','123456','upload/bianchengjiaoshi_touxiang4.jpg','男','擅长领域4','13823888884','简介4','教学经验4',4,4,'2024-12-20 17:38:46',0,4),
+                                      (35,'2024-12-20 09:38:46','教师工号5','教师姓名5','123456','upload/bianchengjiaoshi_touxiang5.jpg','男','擅长领域5','13823888885','简介5','教学经验5',5,5,'2024-12-20 17:38:46',0,5),
+                                      (36,'2024-12-20 09:38:46','教师工号6','教师姓名6','123456','upload/bianchengjiaoshi_touxiang6.jpg','男','擅长领域6','13823888886','简介6','教学经验6',6,6,'2024-12-20 17:38:46',0,6),
+                                      (37,'2024-12-20 09:38:46','教师工号7','教师姓名7','123456','upload/bianchengjiaoshi_touxiang7.jpg','男','擅长领域7','13823888887','简介7','教学经验7',7,7,'2024-12-20 17:38:46',0,7),
+                                      (38,'2024-12-20 09:38:46','教师工号8','教师姓名8','123456','upload/bianchengjiaoshi_touxiang8.jpg','男','擅长领域8','13823888888','简介8','教学经验8',8,8,'2024-12-20 17:38:46',0,8);
 /*!40000 ALTER TABLE `bianchengjiaoshi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +165,7 @@ DROP TABLE IF EXISTS `discussbianchengjiaoshi`;
 CREATE TABLE `discussbianchengjiaoshi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `refid` bigint(20) NOT NULL COMMENT '关联表id',
+  `refid` bigint(20) NOT NULL COMMENT '教师id',
   `userid` bigint(20) NOT NULL COMMENT '用户id',
   `avatarurl` longtext COLLATE utf8mb4_unicode_ci COMMENT '头像',
   `nickname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
@@ -351,7 +358,7 @@ DROP TABLE IF EXISTS `examrecord`;
 CREATE TABLE `examrecord` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `userid` bigint(20) NOT NULL COMMENT '用户id',
+  `userid` int(20) NOT NULL COMMENT '学生id',
   `username` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
   `paperid` bigint(20) NOT NULL COMMENT '编程试卷id（外键）',
   `papername` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '编程试卷名称',
@@ -365,7 +372,8 @@ CREATE TABLE `examrecord` (
   `type` bigint(20) DEFAULT '0' COMMENT '试题类型，0：单选题 1：多选题 2：判断题 3：填空题（暂不考虑多项填空） 4:主观题',
   `myscore` bigint(20) NOT NULL DEFAULT '0' COMMENT '试题得分',
   `myanswer` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '考生答案',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  foreign key (`userid`) references xuesheng(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='测试记录表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -438,7 +446,14 @@ CREATE TABLE `jiazhang` (
 
 LOCK TABLES `jiazhang` WRITE;
 /*!40000 ALTER TABLE `jiazhang` DISABLE KEYS */;
-INSERT INTO `jiazhang` VALUES (11,'2024-12-20 09:38:46','家长账号1','家长姓名1','123456','男','13823888881','upload/jiazhang_touxiang1.jpg','学生账号1','学生姓名1'),(12,'2024-12-20 09:38:46','家长账号2','家长姓名2','123456','男','13823888882','upload/jiazhang_touxiang2.jpg','学生账号2','学生姓名2'),(13,'2024-12-20 09:38:46','家长账号3','家长姓名3','123456','男','13823888883','upload/jiazhang_touxiang3.jpg','学生账号3','学生姓名3'),(14,'2024-12-20 09:38:46','家长账号4','家长姓名4','123456','男','13823888884','upload/jiazhang_touxiang4.jpg','学生账号4','学生姓名4'),(15,'2024-12-20 09:38:46','家长账号5','家长姓名5','123456','男','13823888885','upload/jiazhang_touxiang5.jpg','学生账号5','学生姓名5'),(16,'2024-12-20 09:38:46','家长账号6','家长姓名6','123456','男','13823888886','upload/jiazhang_touxiang6.jpg','学生账号6','学生姓名6'),(17,'2024-12-20 09:38:46','家长账号7','家长姓名7','123456','男','13823888887','upload/jiazhang_touxiang7.jpg','学生账号7','学生姓名7'),(18,'2024-12-20 09:38:46','家长账号8','家长姓名8','123456','男','13823888888','upload/jiazhang_touxiang8.jpg','学生账号8','学生姓名8');
+INSERT INTO `jiazhang` VALUES (11,'2024-12-20 09:38:46','13823888881','张三','123456','男','13823888881','upload/jiazhang_touxiang1.jpg','学生账号1','学生姓名1'),
+                              (12,'2024-12-20 09:38:46','家长账号2','家长姓名2','123456','男','13823888882','upload/jiazhang_touxiang2.jpg','学生账号2','学生姓名2'),
+                              (13,'2024-12-20 09:38:46','家长账号3','家长姓名3','123456','男','13823888883','upload/jiazhang_touxiang3.jpg','学生账号3','学生姓名3'),
+                              (14,'2024-12-20 09:38:46','家长账号4','家长姓名4','123456','男','13823888884','upload/jiazhang_touxiang4.jpg','学生账号4','学生姓名4'),
+                              (15,'2024-12-20 09:38:46','家长账号5','家长姓名5','123456','男','13823888885','upload/jiazhang_touxiang5.jpg','学生账号5','学生姓名5'),
+                              (16,'2024-12-20 09:38:46','家长账号6','家长姓名6','123456','男','13823888886','upload/jiazhang_touxiang6.jpg','学生账号6','学生姓名6'),
+                              (17,'2024-12-20 09:38:46','家长账号7','家长姓名7','123456','男','13823888887','upload/jiazhang_touxiang7.jpg','学生账号7','学生姓名7'),
+                              (18,'2024-12-20 09:38:46','家长账号8','家长姓名8','123456','男','13823888888','upload/jiazhang_touxiang8.jpg','学生账号8','学生姓名8');
 /*!40000 ALTER TABLE `jiazhang` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,7 +474,7 @@ CREATE TABLE `kechengbaoming` (
   `jiaoshigonghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
   `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
   `kechengfeiyong` double DEFAULT NULL COMMENT '课程费用',
-  `keshi` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课时',
+  `keshi` int COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课时',
   `jiazhangzhanghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长账号',
   `jiazhangxingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '家长姓名',
   `xueshengzhanghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '学生账号',
@@ -476,7 +491,14 @@ CREATE TABLE `kechengbaoming` (
 
 LOCK TABLES `kechengbaoming` WRITE;
 /*!40000 ALTER TABLE `kechengbaoming` DISABLE KEYS */;
-INSERT INTO `kechengbaoming` VALUES (1,'2024-12-20 09:38:46','标题1','课程名称1','课程分类1','upload/kechengbaoming_tupian1.jpg,upload/kechengbaoming_tupian2.jpg,upload/kechengbaoming_tupian3.jpg','教师工号1','教师姓名1',1,'课时1','家长账号1','家长姓名1','学生账号1','学生姓名1','2024-12-20 17:38:46','未支付'),(2,'2024-12-20 09:38:46','标题2','课程名称2','课程分类2','upload/kechengbaoming_tupian2.jpg,upload/kechengbaoming_tupian3.jpg,upload/kechengbaoming_tupian4.jpg','教师工号2','教师姓名2',2,'课时2','家长账号2','家长姓名2','学生账号2','学生姓名2','2024-12-20 17:38:46','未支付'),(3,'2024-12-20 09:38:46','标题3','课程名称3','课程分类3','upload/kechengbaoming_tupian3.jpg,upload/kechengbaoming_tupian4.jpg,upload/kechengbaoming_tupian5.jpg','教师工号3','教师姓名3',3,'课时3','家长账号3','家长姓名3','学生账号3','学生姓名3','2024-12-20 17:38:46','未支付'),(4,'2024-12-20 09:38:46','标题4','课程名称4','课程分类4','upload/kechengbaoming_tupian4.jpg,upload/kechengbaoming_tupian5.jpg,upload/kechengbaoming_tupian6.jpg','教师工号4','教师姓名4',4,'课时4','家长账号4','家长姓名4','学生账号4','学生姓名4','2024-12-20 17:38:46','未支付'),(5,'2024-12-20 09:38:46','标题5','课程名称5','课程分类5','upload/kechengbaoming_tupian5.jpg,upload/kechengbaoming_tupian6.jpg,upload/kechengbaoming_tupian7.jpg','教师工号5','教师姓名5',5,'课时5','家长账号5','家长姓名5','学生账号5','学生姓名5','2024-12-20 17:38:46','未支付'),(6,'2024-12-20 09:38:46','标题6','课程名称6','课程分类6','upload/kechengbaoming_tupian6.jpg,upload/kechengbaoming_tupian7.jpg,upload/kechengbaoming_tupian8.jpg','教师工号6','教师姓名6',6,'课时6','家长账号6','家长姓名6','学生账号6','学生姓名6','2024-12-20 17:38:46','未支付'),(7,'2024-12-20 09:38:46','标题7','课程名称7','课程分类7','upload/kechengbaoming_tupian7.jpg,upload/kechengbaoming_tupian8.jpg,upload/kechengbaoming_tupian1.jpg','教师工号7','教师姓名7',7,'课时7','家长账号7','家长姓名7','学生账号7','学生姓名7','2024-12-20 17:38:46','未支付'),(8,'2024-12-20 09:38:46','标题8','课程名称8','课程分类8','upload/kechengbaoming_tupian8.jpg,upload/kechengbaoming_tupian1.jpg,upload/kechengbaoming_tupian2.jpg','教师工号8','教师姓名8',8,'课时8','家长账号8','家长姓名8','学生账号8','学生姓名8','2024-12-20 17:38:46','未支付');
+INSERT INTO `kechengbaoming` VALUES (1,'2024-12-20 09:38:46','python','python编程实战','python','upload/kechengbaoming_tupian1.jpg,upload/kechengbaoming_tupian2.jpg,upload/kechengbaoming_tupian3.jpg','210501050120','程飞',1,80,'家长账号1','家长姓名1','学生账号1','学生姓名1','2024-12-20 17:38:46','未支付'),
+                                    (2,'2024-12-20 09:38:46','标题2','课程名称2','课程分类2','upload/kechengbaoming_tupian2.jpg,upload/kechengbaoming_tupian3.jpg,upload/kechengbaoming_tupian4.jpg','教师工号2','教师姓名2',2,80,'家长账号2','家长姓名2','学生账号2','学生姓名2','2024-12-20 17:38:46','未支付'),
+                                    (3,'2024-12-20 09:38:46','标题3','课程名称3','课程分类3','upload/kechengbaoming_tupian3.jpg,upload/kechengbaoming_tupian4.jpg,upload/kechengbaoming_tupian5.jpg','教师工号3','教师姓名3',3,80,'家长账号3','家长姓名3','学生账号3','学生姓名3','2024-12-20 17:38:46','未支付'),
+                                    (4,'2024-12-20 09:38:46','标题4','课程名称4','课程分类4','upload/kechengbaoming_tupian4.jpg,upload/kechengbaoming_tupian5.jpg,upload/kechengbaoming_tupian6.jpg','教师工号4','教师姓名4',4,80,'家长账号4','家长姓名4','学生账号4','学生姓名4','2024-12-20 17:38:46','未支付'),
+                                    (5,'2024-12-20 09:38:46','标题5','课程名称5','课程分类5','upload/kechengbaoming_tupian5.jpg,upload/kechengbaoming_tupian6.jpg,upload/kechengbaoming_tupian7.jpg','教师工号5','教师姓名5',5,80,'家长账号5','家长姓名5','学生账号5','学生姓名5','2024-12-20 17:38:46','未支付'),
+                                    (6,'2024-12-20 09:38:46','标题6','课程名称6','课程分类6','upload/kechengbaoming_tupian6.jpg,upload/kechengbaoming_tupian7.jpg,upload/kechengbaoming_tupian8.jpg','教师工号6','教师姓名6',6,80,'家长账号6','家长姓名6','学生账号6','学生姓名6','2024-12-20 17:38:46','未支付'),
+                                    (7,'2024-12-20 09:38:46','标题7','课程名称7','课程分类7','upload/kechengbaoming_tupian7.jpg,upload/kechengbaoming_tupian8.jpg,upload/kechengbaoming_tupian1.jpg','教师工号7','教师姓名7',7,80,'家长账号7','家长姓名7','学生账号7','学生姓名7','2024-12-20 17:38:46','未支付'),
+                                    (8,'2024-12-20 09:38:46','标题8','课程名称8','课程分类8','upload/kechengbaoming_tupian8.jpg,upload/kechengbaoming_tupian1.jpg,upload/kechengbaoming_tupian2.jpg','教师工号8','教师姓名8',8,80,'家长账号8','家长姓名8','学生账号8','学生姓名8','2024-12-20 17:38:46','未支付');
 /*!40000 ALTER TABLE `kechengbaoming` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,7 +523,10 @@ CREATE TABLE `kechengfenlei` (
 
 LOCK TABLES `kechengfenlei` WRITE;
 /*!40000 ALTER TABLE `kechengfenlei` DISABLE KEYS */;
-INSERT INTO `kechengfenlei` VALUES (1,'2024-12-20 09:38:46','课程分类1'),(2,'2024-12-20 09:38:46','课程分类2'),(3,'2024-12-20 09:38:46','课程分类3'),(4,'2024-12-20 09:38:46','课程分类4'),(5,'2024-12-20 09:38:46','课程分类5'),(6,'2024-12-20 09:38:46','课程分类6'),(7,'2024-12-20 09:38:46','课程分类7'),(8,'2024-12-20 09:38:46','课程分类8');
+INSERT INTO `kechengfenlei` VALUES (1,'2024-12-20 09:38:46','后端'),
+                                   (2,'2024-12-20 09:38:46','前端'),
+                                   (3,'2024-12-20 09:38:46','理论基础'),
+                                   (4,'2024-12-20 09:38:46','编程实战');
 /*!40000 ALTER TABLE `kechengfenlei` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -520,10 +545,10 @@ CREATE TABLE `kechengxinxi` (
   `kechengfenlei` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程分类',
   `tupian` longtext COLLATE utf8mb4_unicode_ci COMMENT '图片',
   `suoxujichu` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '所需基础',
-  `jiaoshigonghao` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
+  `jiaoshigonghao` varchar(200)  DEFAULT NULL COMMENT '教师工号',
   `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
-  `kechengfeiyong` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程费用',
-  `keshi` int(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课时',
+  `kechengfeiyong` int(200)  DEFAULT NULL COMMENT '课程费用',
+  `keshi` int(200)  DEFAULT NULL COMMENT '课时',
   `kechengjianjie` longtext COLLATE utf8mb4_unicode_ci COMMENT '课程简介',
   `xiangqing` longtext COLLATE utf8mb4_unicode_ci COMMENT '详情',
   `clicktime` datetime DEFAULT NULL COMMENT '最近点击时间',
@@ -539,7 +564,14 @@ CREATE TABLE `kechengxinxi` (
 
 LOCK TABLES `kechengxinxi` WRITE;
 /*!40000 ALTER TABLE `kechengxinxi` DISABLE KEYS */;
-INSERT INTO `kechengxinxi` VALUES (1,'2024-12-20 09:38:46','标题1','课程名称1','课程分类1','upload/kechengxinxi_tupian1.jpg,upload/kechengxinxi_tupian2.jpg,upload/kechengxinxi_tupian3.jpg','所需基础1','教师工号1','教师姓名1','课程费用1','课时1','课程简介1','详情1','2024-12-20 17:38:46',0,1),(2,'2024-12-20 09:38:46','标题2','课程名称2','课程分类2','upload/kechengxinxi_tupian2.jpg,upload/kechengxinxi_tupian3.jpg,upload/kechengxinxi_tupian4.jpg','所需基础2','教师工号2','教师姓名2','课程费用2','课时2','课程简介2','详情2','2024-12-20 17:38:46',0,2),(3,'2024-12-20 09:38:46','标题3','课程名称3','课程分类3','upload/kechengxinxi_tupian3.jpg,upload/kechengxinxi_tupian4.jpg,upload/kechengxinxi_tupian5.jpg','所需基础3','教师工号3','教师姓名3','课程费用3','课时3','课程简介3','详情3','2024-12-20 17:38:46',0,3),(4,'2024-12-20 09:38:46','标题4','课程名称4','课程分类4','upload/kechengxinxi_tupian4.jpg,upload/kechengxinxi_tupian5.jpg,upload/kechengxinxi_tupian6.jpg','所需基础4','教师工号4','教师姓名4','课程费用4','课时4','课程简介4','详情4','2024-12-20 17:38:46',0,4),(5,'2024-12-20 09:38:46','标题5','课程名称5','课程分类5','upload/kechengxinxi_tupian5.jpg,upload/kechengxinxi_tupian6.jpg,upload/kechengxinxi_tupian7.jpg','所需基础5','教师工号5','教师姓名5','课程费用5','课时5','课程简介5','详情5','2024-12-20 17:38:46',0,5),(6,'2024-12-20 09:38:46','标题6','课程名称6','课程分类6','upload/kechengxinxi_tupian6.jpg,upload/kechengxinxi_tupian7.jpg,upload/kechengxinxi_tupian8.jpg','所需基础6','教师工号6','教师姓名6','课程费用6','课时6','课程简介6','详情6','2024-12-20 17:38:46',0,6),(7,'2024-12-20 09:38:46','标题7','课程名称7','课程分类7','upload/kechengxinxi_tupian7.jpg,upload/kechengxinxi_tupian8.jpg,upload/kechengxinxi_tupian1.jpg','所需基础7','教师工号7','教师姓名7','课程费用7','课时7','课程简介7','详情7','2024-12-20 17:38:46',0,7),(8,'2024-12-20 09:38:46','标题8','课程名称8','课程分类8','upload/kechengxinxi_tupian8.jpg,upload/kechengxinxi_tupian1.jpg,upload/kechengxinxi_tupian2.jpg','所需基础8','教师工号8','教师姓名8','课程费用8','课时8','课程简介8','详情8','2024-12-20 17:38:46',0,8);
+INSERT INTO `kechengxinxi` VALUES (1,'2024-12-20 09:38:46','python','python编程','后端','upload/kechengxinxi_tupian1.jpg,upload/kechengxinxi_tupian2.jpg,upload/kechengxinxi_tupian3.jpg','无','210501050120','程飞',100,40,'课程简介1','详情1','2024-12-20 17:38:46',0,1),
+                                  (2,'2024-12-20 09:38:46','c语言','c语言编程','后端','upload/kechengxinxi_tupian2.jpg,upload/kechengxinxi_tupian3.jpg,upload/kechengxinxi_tupian4.jpg','无','210501050121','王科',100,40,'课程简介2','详情2','2024-12-20 17:38:46',0,2),
+                                  (3,'2024-12-20 09:38:46','c++','c++编程','后端','upload/kechengxinxi_tupian3.jpg,upload/kechengxinxi_tupian4.jpg,upload/kechengxinxi_tupian5.jpg','无','210501050122','右怡',100,40,'课程简介3','详情3','2024-12-20 17:38:46',0,3),
+                                  (4,'2024-12-20 09:38:46','c#','c#编程','后端','upload/kechengxinxi_tupian4.jpg,upload/kechengxinxi_tupian5.jpg,upload/kechengxinxi_tupian6.jpg','c语言','210501050123','王平',100,40,'课程简介4','详情4','2024-12-20 17:38:46',0,4),
+                                  (5,'2024-12-20 09:38:46','java','java编程','后端','upload/kechengxinxi_tupian5.jpg,upload/kechengxinxi_tupian6.jpg,upload/kechengxinxi_tupian7.jpg','无','210501050134','杨吉',100,40,'课程简介5','详情5','2024-12-20 17:38:46',0,5),
+                                  (6,'2024-12-20 09:38:46','vue','vue编程','前端','upload/kechengxinxi_tupian6.jpg,upload/kechengxinxi_tupian7.jpg,upload/kechengxinxi_tupian8.jpg','html','210501050125','周峰',100,40,'课程简介6','详情6','2024-12-20 17:38:46',0,6),
+                                  (7,'2024-12-20 09:38:46','react','react编程','前端','upload/kechengxinxi_tupian7.jpg,upload/kechengxinxi_tupian8.jpg,upload/kechengxinxi_tupian1.jpg','html','210501050126','周周',100,40,'课程简介7','详情7','2024-12-20 17:38:46',0,7),
+                                  (8,'2024-12-20 09:38:46','数据结构','数据结构分析','理论基础','upload/kechengxinxi_tupian8.jpg,upload/kechengxinxi_tupian1.jpg,upload/kechengxinxi_tupian2.jpg','c语言','210501050133','汤泽',100,40,'课程简介8','详情8','2024-12-20 17:38:46',0,8);
 /*!40000 ALTER TABLE `kechengxinxi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -616,31 +648,30 @@ CREATE TABLE `paikexinxi` (
                               `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
                               `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                               `admin` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '管理员账号',
+                              `kechengId` bigint(20) NOT NULL COMMENT '课程id',
                               `kechengmingcheng` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程名称',
                               `kechengfenlei` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程分类',
                               `jiaoshigonghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
                               `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
                               `shangkedidian` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '上课地点',
                               `paikeshijian` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '排课时间',
-                              `xueshengmingdan` longtext COLLATE utf8mb4_unicode_ci COMMENT '学生名单',
-                              PRIMARY KEY (`id`)
+                              PRIMARY KEY (`id`),
+                              foreign key (kechengId) references kechengxinxi(id),
+                              foreign key (jiaoshigonghao) references bianchengjiaoshi(jiaoshigonghao)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='排课信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `paikexinxi`
 --
 
 LOCK TABLES `paikexinxi` WRITE;
 /*!40000 ALTER TABLE `paikexinxi` DISABLE KEYS */;
-INSERT INTO `paikexinxi` VALUES (1,'2024-12-20 09:38:46','admin','课程名称1','课程分类1','教师工号1','教师姓名1','上课地点1','排课时间1','学生名单1'),
-                                (2,'2024-12-20 09:38:46','admin','课程名称2','课程分类2','教师工号2','教师姓名2','上课地点2','排课时间2','学生名单2'),
-                                (3,'2024-12-20 09:38:46','admin','课程名称3','课程分类3','教师工号3','教师姓名3','上课地点3','排课时间3','学生名单3'),
-                                (4,'2024-12-20 09:38:46','admin','课程名称4','课程分类4','教师工号4','教师姓名4','上课地点4','排课时间4','学生名单4'),
-                                (5,'2024-12-20 09:38:46','admin','课程名称5','课程分类5','教师工号5','教师姓名5','上课地点5','排课时间5','学生名单5'),
-                                (6,'2024-12-20 09:38:46','admin','课程名称6','课程分类6','教师工号6','教师姓名6','上课地点6','排课时间6','学生名单6'),
-                                (7,'2024-12-20 09:38:46','admin','课程名称7','课程分类7','教师工号7','教师姓名7','上课地点7','排课时间7','学生名单7'),
-                                (8,'2024-12-20 09:38:46','admin','课程名称8','课程分类8','教师工号8','教师姓名8','上课地点8','排课时间8','学生名单8');
+INSERT INTO `paikexinxi` VALUES (1,'2024-12-20 09:38:46','admin',1,'python','后端','210501050120','程飞','线上','2025.4.28.10:00'),
+                                (2,'2024-12-20 09:38:46','admin',2,'c语言','后端','210501050121','王科','线上','2025.4.28.15:00'),
+                                (3,'2024-12-20 09:38:46','admin',5,'java','后端','210501050134','杨吉','线上','2025.4.29.10:00'),
+                                (4,'2024-12-20 09:38:46','admin',6,'vue','前端','210501050125','周峰','线上','2025.4.29.15:00'),
+                                (5,'2024-12-20 09:38:46','admin',7,'react','前端','210501050126','周周','线上','2025.4.30.10:00'),
+                                (6,'2024-12-20 09:38:46','admin',8,'数据结构','理论基础','210501050133','汤泽','线上','2025.4.30.15:00');
 /*!40000 ALTER TABLE `paikexinxi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -816,6 +847,7 @@ CREATE TABLE `xuesheng` (
   UNIQUE KEY `xueshengzhanghao` (`xueshengzhanghao`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='学生';
 /*!40101 SET character_set_client = @saved_cs_client */;
+alter table xuesheng add foreign key (jiazhangzhanghao) references jiazhang(jiazhangzhanghao);
 
 --
 -- Dumping data for table `xuesheng`
@@ -823,7 +855,14 @@ CREATE TABLE `xuesheng` (
 
 LOCK TABLES `xuesheng` WRITE;
 /*!40000 ALTER TABLE `xuesheng` DISABLE KEYS */;
-INSERT INTO `xuesheng` VALUES (21,'2024-12-20 09:38:46','学生账号1','学生姓名1','123456','upload/xuesheng_touxiang1.jpg','男','年龄1','家长账号1','家长姓名1','家长电话1','家庭住址1'),(22,'2024-12-20 09:38:46','学生账号2','学生姓名2','123456','upload/xuesheng_touxiang2.jpg','男','年龄2','家长账号2','家长姓名2','家长电话2','家庭住址2'),(23,'2024-12-20 09:38:46','学生账号3','学生姓名3','123456','upload/xuesheng_touxiang3.jpg','男','年龄3','家长账号3','家长姓名3','家长电话3','家庭住址3'),(24,'2024-12-20 09:38:46','学生账号4','学生姓名4','123456','upload/xuesheng_touxiang4.jpg','男','年龄4','家长账号4','家长姓名4','家长电话4','家庭住址4'),(25,'2024-12-20 09:38:46','学生账号5','学生姓名5','123456','upload/xuesheng_touxiang5.jpg','男','年龄5','家长账号5','家长姓名5','家长电话5','家庭住址5'),(26,'2024-12-20 09:38:46','学生账号6','学生姓名6','123456','upload/xuesheng_touxiang6.jpg','男','年龄6','家长账号6','家长姓名6','家长电话6','家庭住址6'),(27,'2024-12-20 09:38:46','学生账号7','学生姓名7','123456','upload/xuesheng_touxiang7.jpg','男','年龄7','家长账号7','家长姓名7','家长电话7','家庭住址7'),(28,'2024-12-20 09:38:46','学生账号8','学生姓名8','123456','upload/xuesheng_touxiang8.jpg','男','年龄8','家长账号8','家长姓名8','家长电话8','家庭住址8');
+INSERT INTO `xuesheng` VALUES (21,'2024-12-20 09:38:46','学生账号1','学生姓名1','123456','upload/xuesheng_touxiang1.jpg','男','年龄1','家长账号1','家长姓名1','家长电话1','家庭住址1'),
+                              (22,'2024-12-20 09:38:46','学生账号2','学生姓名2','123456','upload/xuesheng_touxiang2.jpg','男','年龄2','家长账号2','家长姓名2','家长电话2','家庭住址2'),
+                              (23,'2024-12-20 09:38:46','学生账号3','学生姓名3','123456','upload/xuesheng_touxiang3.jpg','男','年龄3','家长账号3','家长姓名3','家长电话3','家庭住址3'),
+                              (24,'2024-12-20 09:38:46','学生账号4','学生姓名4','123456','upload/xuesheng_touxiang4.jpg','男','年龄4','家长账号4','家长姓名4','家长电话4','家庭住址4'),
+                              (25,'2024-12-20 09:38:46','学生账号5','学生姓名5','123456','upload/xuesheng_touxiang5.jpg','男','年龄5','家长账号5','家长姓名5','家长电话5','家庭住址5'),
+                              (26,'2024-12-20 09:38:46','学生账号6','学生姓名6','123456','upload/xuesheng_touxiang6.jpg','男','年龄6','家长账号6','家长姓名6','家长电话6','家庭住址6'),
+                              (27,'2024-12-20 09:38:46','学生账号7','学生姓名7','123456','upload/xuesheng_touxiang7.jpg','男','年龄7','家长账号7','家长姓名7','家长电话7','家庭住址7'),
+                              (28,'2024-12-20 09:38:46','学生账号8','学生姓名8','123456','upload/xuesheng_touxiang8.jpg','男','年龄8','家长账号8','家长姓名8','家长电话8','家庭住址8');
 /*!40000 ALTER TABLE `xuesheng` ENABLE KEYS */;
 UNLOCK TABLES;
 
