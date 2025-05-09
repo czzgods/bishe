@@ -94,6 +94,8 @@ public class XueshengController {
 		if(u!=null) {
 			return R.error("注册用户已存在");
 		}
+        // 使用更安全的ID生成方式
+        // Integer uId = (int)(System.currentTimeMillis() % Integer.MAX_VALUE);
 		Long uId = new Date().getTime();
 		xuesheng.setId(uId);
         xuesheng.setMima(DigestUtils.md5Hex(xuesheng.getMima()));

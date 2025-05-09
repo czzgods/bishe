@@ -85,7 +85,7 @@ public class XueshengEntity<T> implements Serializable {
 	 * 年龄
 	 */
 					
-	private String nianling;
+	private Integer nianling;
 	
 	/**
 	 * 家长账号
@@ -193,13 +193,13 @@ public class XueshengEntity<T> implements Serializable {
 	/**
 	 * 设置：年龄
 	 */
-	public void setNianling(String nianling) {
+	public void setNianling(Integer nianling) {
 		this.nianling = nianling;
 	}
 	/**
 	 * 获取：年龄
 	 */
-	public String getNianling() {
+	public Integer getNianling() {
 		return nianling;
 	}
 	/**

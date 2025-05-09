@@ -358,7 +358,7 @@ DROP TABLE IF EXISTS `examrecord`;
 CREATE TABLE `examrecord` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `userid` int(20) NOT NULL COMMENT '学生id',
+  `userid` bigint NOT NULL COMMENT '学生id',
   `username` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
   `paperid` bigint(20) NOT NULL COMMENT '编程试卷id（外键）',
   `papername` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '编程试卷名称',
@@ -831,7 +831,7 @@ DROP TABLE IF EXISTS `xuesheng`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `xuesheng` (
-  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `xueshengzhanghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '学生账号',
   `xueshengxingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '学生姓名',
@@ -936,7 +936,14 @@ CREATE TABLE `xuexiziliao` (
 
 LOCK TABLES `xuexiziliao` WRITE;
 /*!40000 ALTER TABLE `xuexiziliao` DISABLE KEYS */;
-INSERT INTO `xuexiziliao` VALUES (1,'2024-12-20 09:38:46','标题1','课程分类1','2024-12-20 17:38:46','upload/xuexiziliao_fengmian1.jpg,upload/xuexiziliao_fengmian2.jpg,upload/xuexiziliao_fengmian3.jpg','教师工号1','教师姓名1','','','正文1',1,1,'2024-12-20 17:38:46',0,1),(2,'2024-12-20 09:38:46','标题2','课程分类2','2024-12-20 17:38:46','upload/xuexiziliao_fengmian2.jpg,upload/xuexiziliao_fengmian3.jpg,upload/xuexiziliao_fengmian4.jpg','教师工号2','教师姓名2','','','正文2',2,2,'2024-12-20 17:38:46',0,2),(3,'2024-12-20 09:38:46','标题3','课程分类3','2024-12-20 17:38:46','upload/xuexiziliao_fengmian3.jpg,upload/xuexiziliao_fengmian4.jpg,upload/xuexiziliao_fengmian5.jpg','教师工号3','教师姓名3','','','正文3',3,3,'2024-12-20 17:38:46',0,3),(4,'2024-12-20 09:38:46','标题4','课程分类4','2024-12-20 17:38:46','upload/xuexiziliao_fengmian4.jpg,upload/xuexiziliao_fengmian5.jpg,upload/xuexiziliao_fengmian6.jpg','教师工号4','教师姓名4','','','正文4',4,4,'2024-12-20 17:38:46',0,4),(5,'2024-12-20 09:38:46','标题5','课程分类5','2024-12-20 17:38:46','upload/xuexiziliao_fengmian5.jpg,upload/xuexiziliao_fengmian6.jpg,upload/xuexiziliao_fengmian7.jpg','教师工号5','教师姓名5','','','正文5',5,5,'2024-12-20 17:38:46',0,5),(6,'2024-12-20 09:38:46','标题6','课程分类6','2024-12-20 17:38:46','upload/xuexiziliao_fengmian6.jpg,upload/xuexiziliao_fengmian7.jpg,upload/xuexiziliao_fengmian8.jpg','教师工号6','教师姓名6','','','正文6',6,6,'2024-12-20 17:38:46',0,6),(7,'2024-12-20 09:38:46','标题7','课程分类7','2024-12-20 17:38:46','upload/xuexiziliao_fengmian7.jpg,upload/xuexiziliao_fengmian8.jpg,upload/xuexiziliao_fengmian1.jpg','教师工号7','教师姓名7','','','正文7',7,7,'2024-12-20 17:38:46',0,7),(8,'2024-12-20 09:38:46','标题8','课程分类8','2024-12-20 17:38:46','upload/xuexiziliao_fengmian8.jpg,upload/xuexiziliao_fengmian1.jpg,upload/xuexiziliao_fengmian2.jpg','教师工号8','教师姓名8','','','正文8',8,8,'2024-12-20 17:38:46',0,8);
+INSERT INTO `xuexiziliao` VALUES (1,'2024-12-20 09:38:46','标题1','课程分类1','2024-12-20 17:38:46','upload/xuexiziliao_fengmian1.jpg,upload/xuexiziliao_fengmian2.jpg,upload/xuexiziliao_fengmian3.jpg','教师工号1','教师姓名1','','','正文1',1,1,'2024-12-20 17:38:46',0,1),
+                                 (2,'2024-12-20 09:38:46','标题2','课程分类2','2024-12-20 17:38:46','upload/xuexiziliao_fengmian2.jpg,upload/xuexiziliao_fengmian3.jpg,upload/xuexiziliao_fengmian4.jpg','教师工号2','教师姓名2','','','正文2',2,2,'2024-12-20 17:38:46',0,2),
+                                 (3,'2024-12-20 09:38:46','标题3','课程分类3','2024-12-20 17:38:46','upload/xuexiziliao_fengmian3.jpg,upload/xuexiziliao_fengmian4.jpg,upload/xuexiziliao_fengmian5.jpg','教师工号3','教师姓名3','','','正文3',3,3,'2024-12-20 17:38:46',0,3),
+                                 (4,'2024-12-20 09:38:46','标题4','课程分类4','2024-12-20 17:38:46','upload/xuexiziliao_fengmian4.jpg,upload/xuexiziliao_fengmian5.jpg,upload/xuexiziliao_fengmian6.jpg','教师工号4','教师姓名4','','','正文4',4,4,'2024-12-20 17:38:46',0,4),
+                                 (5,'2024-12-20 09:38:46','标题5','课程分类5','2024-12-20 17:38:46','upload/xuexiziliao_fengmian5.jpg,upload/xuexiziliao_fengmian6.jpg,upload/xuexiziliao_fengmian7.jpg','教师工号5','教师姓名5','','','正文5',5,5,'2024-12-20 17:38:46',0,5),
+                                 (6,'2024-12-20 09:38:46','标题6','课程分类6','2024-12-20 17:38:46','upload/xuexiziliao_fengmian6.jpg,upload/xuexiziliao_fengmian7.jpg,upload/xuexiziliao_fengmian8.jpg','教师工号6','教师姓名6','','','正文6',6,6,'2024-12-20 17:38:46',0,6),
+                                 (7,'2024-12-20 09:38:46','标题7','课程分类7','2024-12-20 17:38:46','upload/xuexiziliao_fengmian7.jpg,upload/xuexiziliao_fengmian8.jpg,upload/xuexiziliao_fengmian1.jpg','教师工号7','教师姓名7','','','正文7',7,7,'2024-12-20 17:38:46',0,7),
+                                 (8,'2024-12-20 09:38:46','标题8','课程分类8','2024-12-20 17:38:46','upload/xuexiziliao_fengmian8.jpg,upload/xuexiziliao_fengmian1.jpg,upload/xuexiziliao_fengmian2.jpg','教师工号8','教师姓名8','','','正文8',8,8,'2024-12-20 17:38:46',0,8);
 /*!40000 ALTER TABLE `xuexiziliao` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
