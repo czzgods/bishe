@@ -653,7 +653,7 @@ CREATE TABLE `paikexinxi` (
                               `kechengfenlei` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '课程分类',
                               `jiaoshigonghao` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师工号',
                               `jiaoshixingming` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '教师姓名',
-                              `shangkedidian` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '上课地点',
+                              `shangkedidian` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '授课模式',
                               `paikeshijian` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '排课时间',
                               PRIMARY KEY (`id`),
                               foreign key (kechengId) references kechengxinxi(id),

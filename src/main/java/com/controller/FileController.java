@@ -97,22 +97,30 @@ public class FileController{
 	@RequestMapping("/download")
 	public ResponseEntity<byte[]> download(@RequestParam String fileName) {
 		try {
+			// 获取静态资源目录路径（classpath:static）
 			File path = new File(ResourceUtils.getURL("classpath:static").getPath());
 			if(!path.exists()) {
+				// 如果静态资源目录不存在，使用当前工作目录
 			    path = new File("");
 			}
+			// 构建上传文件存储目录（static/upload/）
 			File upload = new File(path.getAbsolutePath(),"/upload/");
 			if(!upload.exists()) {
+				// 自动创建多级目录
 			    upload.mkdirs();
 			}
+			// 拼接完整文件路径
 			File file = new File(upload.getAbsolutePath()+"/"+fileName);
 			if(file.exists()){
+				// 文件权限检查（当前被注释，可根据需求开启）
 				/*if(!fileService.canRead(file, SessionManager.getSessionUser())){
 					getResponse().sendError(403);
 				}*/
+				// 设置HTTP响应头
 				HttpHeaders headers = new HttpHeaders();
 			    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
-			    headers.setContentDispositionFormData("attachment", fileName);    
+			    headers.setContentDispositionFormData("attachment", fileName);
+				// 返回文件字节流（状态码201表示资源创建成功）
 			    return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.CREATED);
 			}
 		} catch (IOException e) {
